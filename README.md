@@ -30,7 +30,7 @@ An open-source MVP for planning electrical cabinets, control panels, and network
 
 ## Tech Stack / 技术栈
 
-- Next.js 14
+- Next.js 16
 - React 18
 - TypeScript
 - Tailwind CSS
@@ -80,6 +80,7 @@ APP_PORT=8080 docker compose up -d --build
 
 - Chinese: [docs/DEPLOYMENT.zh-CN.md](docs/DEPLOYMENT.zh-CN.md)
 - English: [docs/DEPLOYMENT.en.md](docs/DEPLOYMENT.en.md)
+- Maintenance notes: [docs/MAINTENANCE.zh-CN.md](docs/MAINTENANCE.zh-CN.md)
 
 ## Project Structure / 项目结构
 

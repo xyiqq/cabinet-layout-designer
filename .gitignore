@@ -1,0 +1,16 @@
+.next/
+node_modules/
+.npm-cache/
+.next-dev*.log
+*.tsbuildinfo
+.tmp-test/
+output/
+test-results/
+.playwright-cli/
+.agents/
+.codex/
+*.log
+.env
+.env.*
+!.env.example
+*.local

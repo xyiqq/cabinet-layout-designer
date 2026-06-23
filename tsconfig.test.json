@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "incremental": false,
+    "jsx": "react-jsx",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": ".tmp-test",
+    "rootDir": ".",
+    "target": "es2019",
+    "tsBuildInfoFile": ".tmp-test/tsconfig.tsbuildinfo"
+  },
+  "include": [
+    "lib/网络机柜布局.ts",
+    "lib/网络机柜计算.ts",
+    "scripts/测试网络机柜布局.ts",
+    "types/设备.ts"
+  ]
+}

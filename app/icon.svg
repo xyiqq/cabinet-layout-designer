@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="shell" x1="10" y1="5" x2="54" y2="59" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.46" stop-color="#e9edf0"/>
+      <stop offset="1" stop-color="#9aa4ad"/>
+    </linearGradient>
+    <linearGradient id="door" x1="16" y1="10" x2="48" y2="55" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff8e8"/>
+      <stop offset="0.58" stop-color="#e8d5ae"/>
+      <stop offset="1" stop-color="#a98b58"/>
+    </linearGradient>
+    <linearGradient id="moduleBlue" x1="24" y1="21" x2="41" y2="33" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8ccbe2"/>
+      <stop offset="1" stop-color="#17485d"/>
+    </linearGradient>
+    <linearGradient id="moduleRed" x1="23" y1="34" x2="36" y2="45" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e77a63"/>
+      <stop offset="1" stop-color="#84261e"/>
+    </linearGradient>
+    <radialGradient id="led" cx="35%" cy="30%" r="70%">
+      <stop offset="0" stop-color="#f2ffe8"/>
+      <stop offset="0.45" stop-color="#9be071"/>
+      <stop offset="1" stop-color="#2f8f6a"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="32" cy="58" rx="21" ry="4" fill="#17202a" opacity=".18"/>
+  <rect x="7" y="5" width="50" height="52" rx="13" fill="url(#shell)"/>
+  <rect x="12" y="9" width="40" height="46" rx="10" fill="#17202a" opacity=".2"/>
+  <rect x="14" y="8" width="36" height="46" rx="7" fill="url(#door)" stroke="#7c5d24" stroke-width="2.2"/>
+  <path d="M17 12h30v10c-8.5-3.6-19-2.8-30 1.5Z" fill="#fff" opacity=".36"/>
+  <rect x="21" y="17" width="22" height="5" rx="2.5" fill="#26303b"/>
+  <rect x="20" y="26" width="24" height="3.5" rx="1.8" fill="#d8b86c"/>
+  <rect x="23" y="32" width="11" height="15" rx="2.4" fill="url(#moduleRed)" stroke="#5f1e18" stroke-width="1.2"/>
+  <rect x="36" y="32" width="8" height="15" rx="2.2" fill="url(#moduleBlue)" stroke="#17485d" stroke-width="1.2"/>
+  <rect x="24.5" y="34" width="8" height="4" rx="1.2" fill="#fff" opacity=".35"/>
+  <rect x="37.5" y="34" width="5" height="4" rx="1.1" fill="#fff" opacity=".35"/>
+  <circle cx="42" cy="45" r="2" fill="url(#led)"/>
+  <circle cx="18.5" cy="13.5" r="1.6" fill="#fff" opacity=".85"/>
+  <circle cx="45.5" cy="50" r="1.6" fill="#17202a" opacity=".28"/>
+</svg>

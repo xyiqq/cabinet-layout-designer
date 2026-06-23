@@ -1,0 +1,15 @@
+node_modules
+.next
+.tmp-test
+.npm-cache
+.playwright-cli
+output
+test-results
+.git
+.agents
+.codex
+*.log
+*.tsbuildinfo
+.env
+.env.*
+README.local.md

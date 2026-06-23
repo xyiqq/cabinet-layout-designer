@@ -1,0 +1,13 @@
+services:
+  cabinet-layout-designer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cabinet-layout-designer:latest
+    container_name: cabinet-layout-designer
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports:
+      - "${APP_PORT:-3000}:3000"

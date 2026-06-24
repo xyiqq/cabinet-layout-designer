@@ -61,7 +61,7 @@ docker build -t xyiqq/cabinet-layout-designer:local .
 
 ## 自动发布到 Docker Hub
 
-仓库包含 `.github/workflows/dockerhub.yml`。推送到 `main` 或推送 `v*` tag 时，GitHub Actions 会构建并推送多架构镜像：
+仓库包含 `.github/workflows/dockerhub.yml`。推送到 `main` 或推送 `v*` tag 时，GitHub Actions 会构建并推送 Docker Hub 镜像：
 
 - `xyiqq/cabinet-layout-designer:latest`
 - `xyiqq/cabinet-layout-designer:sha-<commit>`

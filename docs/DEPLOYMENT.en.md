@@ -305,7 +305,7 @@ For team-shared product libraries, add a backend API or an import/export workflo
 
 ## 13. Docker Hub Publishing
 
-The repository includes `.github/workflows/dockerhub.yml`. It publishes multi-platform images to Docker Hub on pushes to `main`, on `v*` tags, and on manual workflow dispatch.
+The repository includes `.github/workflows/dockerhub.yml`. It publishes the Docker Hub image on pushes to `main`, on `v*` tags, and on manual workflow dispatch.
 
 Required GitHub Actions secrets:
 

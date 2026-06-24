@@ -23,8 +23,12 @@ jobs:
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_XYIQQ: ${{ secrets.DOCKERHUB_XYIQQ }}
         run: |
-          if [ -n "$DOCKERHUB_USERNAME" ] && [ -n "$DOCKERHUB_TOKEN" ]; then
+          USERNAME="${DOCKERHUB_USERNAME:-xyiqq}"
+          TOKEN="${DOCKERHUB_TOKEN:-$DOCKERHUB_XYIQQ}"
+          echo "username=$USERNAME" >> "$GITHUB_OUTPUT"
+          if [ -n "$USERNAME" ] && [ -n "$TOKEN" ]; then
             echo "can_push=true" >> "$GITHUB_OUTPUT"
             echo "Docker Hub credentials found. This run will publish the image."
           else
@@ -46,8 +50,8 @@ jobs:
         if: steps.publish.outputs.can_push == 'true'
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ steps.publish.outputs.username }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || secrets.DOCKERHUB_XYIQQ }}
 
       - name: Generate image metadata
         id: meta
@@ -90,5 +94,5 @@ jobs:
             echo '${{ steps.meta.outputs.tags }}' >> "$GITHUB_STEP_SUMMARY"
           else
             echo "Docker image build completed without publishing." >> "$GITHUB_STEP_SUMMARY"
-            echo "Add DOCKERHUB_USERNAME and DOCKERHUB_TOKEN repository secrets, then rerun this workflow to publish." >> "$GITHUB_STEP_SUMMARY"
+            echo "Add DOCKERHUB_TOKEN or DOCKERHUB_XYIQQ repository secret, then rerun this workflow to publish." >> "$GITHUB_STEP_SUMMARY"
           fi

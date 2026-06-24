@@ -2,13 +2,6 @@ name: Publish Docker Hub overview
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - docs/DOCKERHUB-OVERVIEW.md
-      - docs/images/**
-      - .github/workflows/dockerhub-overview.yml
 
 permissions:
   contents: read
@@ -28,7 +21,7 @@ jobs:
       - name: Push overview to Docker Hub
         env:
           DOCKERHUB_USERNAME: xyiqq
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_XYIQQ }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_OVERVIEW_TOKEN || secrets.DOCKERHUB_XYIQQ }}
           DOCKERHUB_NAMESPACE: xyiqq
           DOCKERHUB_REPOSITORY: cabinet-layout-designer
         run: |
@@ -44,7 +37,7 @@ jobs:
           repository = os.environ["DOCKERHUB_REPOSITORY"]
 
           if not password:
-              raise SystemExit("DOCKERHUB_XYIQQ secret is required to update the Docker Hub overview")
+              raise SystemExit("DOCKERHUB_OVERVIEW_TOKEN or DOCKERHUB_XYIQQ secret is required to update the Docker Hub overview")
 
           with open("docs/DOCKERHUB-OVERVIEW.md", "r", encoding="utf-8") as file:
               overview = file.read()
@@ -64,6 +57,12 @@ jobs:
                       return json.loads(data) if data else {}
               except urllib.error.HTTPError as error:
                   details = error.read().decode("utf-8", errors="replace")
+                  if error.code == 403:
+                      raise SystemExit(
+                          "Docker Hub token authenticated but cannot edit repository metadata. "
+                          "Create a Docker Hub access token that can manage the repository overview, "
+                          "save it as GitHub Actions secret DOCKERHUB_OVERVIEW_TOKEN, then rerun this workflow."
+                      ) from error
                   raise SystemExit(f"Docker Hub API request failed: {error.code} {details}") from error
 
           login = request_json(

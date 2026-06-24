@@ -24,6 +24,8 @@ xyiqq/cabinet-layout-designer
 
 Docker Hub 仓库概览可使用 [DOCKERHUB-OVERVIEW.md](DOCKERHUB-OVERVIEW.md) 作为复制粘贴来源。该文件使用 GitHub raw 绝对图片链接，推送到 GitHub 后可在 Docker Hub 正常显示截图。
 
+如需通过 GitHub Actions 自动写入 Docker Hub Overview，请创建一个能编辑仓库元数据 / 概览的 Docker Hub token，保存为 `DOCKERHUB_OVERVIEW_TOKEN`，然后手动运行 `Publish Docker Hub overview` workflow。镜像推送用的 `DOCKERHUB_XYIQQ` token 可能没有修改仓库概览的权限。
+
 ## 直接下载运行
 
 ```bash
@@ -98,6 +100,7 @@ docker build -t xyiqq/cabinet-layout-designer:local .
 当前仓库使用：
 
 - `DOCKERHUB_XYIQQ`: `xyiqq` 账号的 Docker Hub access token
+- `DOCKERHUB_OVERVIEW_TOKEN`: 可选，用于修改 Docker Hub 仓库元数据 / Overview 的 token
 
 也支持标准双 secret：
 

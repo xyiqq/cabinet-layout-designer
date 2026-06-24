@@ -24,6 +24,8 @@ Language: [中文](DOCKERHUB.zh-CN.md) / English
 
 The Docker Hub repository overview can use [DOCKERHUB-OVERVIEW.md](DOCKERHUB-OVERVIEW.md) as its copy/paste source. It uses absolute GitHub raw image URLs so screenshots render correctly on Docker Hub after this repository is pushed.
 
+To publish this content through GitHub Actions, create a Docker Hub token that can edit repository metadata, save it as `DOCKERHUB_OVERVIEW_TOKEN`, then run the `Publish Docker Hub overview` workflow manually. The image-push token `DOCKERHUB_XYIQQ` may not have enough scope for repository overview edits.
+
 ## Pull And Run
 
 ```bash
@@ -98,6 +100,7 @@ The public tags are assembled as multi-architecture manifests for:
 Current repository setup:
 
 - `DOCKERHUB_XYIQQ`: Docker Hub access token for the `xyiqq` account
+- `DOCKERHUB_OVERVIEW_TOKEN`: optional token with repository metadata/overview edit permission
 
 Alternative standard setup:
 

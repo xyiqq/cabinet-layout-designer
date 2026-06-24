@@ -11,7 +11,7 @@ Language: [中文](MAINTENANCE.zh-CN.md) / English
 - Docker Hub image: `xyiqq/cabinet-layout-designer:latest`
 - Image architectures: `linux/amd64` and `linux/arm64`
 - License: MIT
-- Framework: Next.js 16.2.9 + React 18.3.1 + TypeScript
+- Framework: Next.js 16.2.9 + React 19.2.0 + TypeScript
 - Canvas: Konva / React Konva
 - Styling: Tailwind CSS
 - Persistence: built-in data files plus browser `localStorage`

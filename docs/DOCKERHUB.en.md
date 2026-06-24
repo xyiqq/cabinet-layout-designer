@@ -8,6 +8,22 @@ xyiqq/cabinet-layout-designer
 
 Language: [中文](DOCKERHUB.zh-CN.md) / English
 
+## Screenshots
+
+### Application Overview
+
+![Cabinet layout overview](images/cabinet-layout-designer-overview.png)
+
+### Network Rack Mode
+
+![Network rack layout](images/cabinet-layout-designer-rack.png)
+
+### Docker Hub Repository
+
+![Docker Hub repository page](images/dockerhub-repository.png)
+
+The Docker Hub repository overview can use [DOCKERHUB-OVERVIEW.md](DOCKERHUB-OVERVIEW.md) as its copy/paste source. It uses absolute GitHub raw image URLs so screenshots render correctly on Docker Hub after this repository is pushed.
+
 ## Pull And Run
 
 ```bash

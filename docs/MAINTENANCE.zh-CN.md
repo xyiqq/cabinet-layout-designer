@@ -11,7 +11,7 @@
 - Docker Hub 镜像：`xyiqq/cabinet-layout-designer:latest`
 - 镜像架构：`linux/amd64` 和 `linux/arm64`
 - 许可证：MIT
-- 前端框架：Next.js 16.2.9 + React 18.3.1 + TypeScript
+- 前端框架：Next.js 16.2.9 + React 19.2.0 + TypeScript
 - 画布：Konva / React Konva
 - 样式：Tailwind CSS
 - 数据存储：内置数据文件 + 浏览器 `localStorage`

@@ -1,0 +1,88 @@
+name: Publish Docker Hub overview
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/DOCKERHUB-OVERVIEW.md
+      - docs/images/**
+      - .github/workflows/dockerhub-overview.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dockerhub-overview
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Update Docker Hub repository overview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Push overview to Docker Hub
+        env:
+          DOCKERHUB_USERNAME: xyiqq
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_XYIQQ }}
+          DOCKERHUB_NAMESPACE: xyiqq
+          DOCKERHUB_REPOSITORY: cabinet-layout-designer
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+
+          username = os.environ["DOCKERHUB_USERNAME"]
+          password = os.environ.get("DOCKERHUB_TOKEN", "")
+          namespace = os.environ["DOCKERHUB_NAMESPACE"]
+          repository = os.environ["DOCKERHUB_REPOSITORY"]
+
+          if not password:
+              raise SystemExit("DOCKERHUB_XYIQQ secret is required to update the Docker Hub overview")
+
+          with open("docs/DOCKERHUB-OVERVIEW.md", "r", encoding="utf-8") as file:
+              overview = file.read()
+
+          def request_json(url, method, payload=None, token=None):
+              body = None if payload is None else json.dumps(payload).encode("utf-8")
+              headers = {
+                  "Content-Type": "application/json",
+                  "User-Agent": "cabinet-layout-designer-github-actions",
+              }
+              if token:
+                  headers["Authorization"] = f"JWT {token}"
+              request = urllib.request.Request(url, data=body, headers=headers, method=method)
+              try:
+                  with urllib.request.urlopen(request, timeout=30) as response:
+                      data = response.read().decode("utf-8")
+                      return json.loads(data) if data else {}
+              except urllib.error.HTTPError as error:
+                  details = error.read().decode("utf-8", errors="replace")
+                  raise SystemExit(f"Docker Hub API request failed: {error.code} {details}") from error
+
+          login = request_json(
+              "https://hub.docker.com/v2/users/login/",
+              "POST",
+              {"username": username, "password": password},
+          )
+          jwt = login.get("token")
+          if not jwt:
+              raise SystemExit("Docker Hub login did not return a token")
+
+          request_json(
+              f"https://hub.docker.com/v2/repositories/{namespace}/{repository}/",
+              "PATCH",
+              {
+                  "description": "Open-source cabinet, control panel, and network rack layout designer.",
+                  "full_description": overview,
+              },
+              jwt,
+          )
+          print("Docker Hub overview updated")
+          PY

@@ -19,14 +19,14 @@
   "dependencies": {
     "konva": "9.3.16",
     "next": "16.2.9",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-konva": "18.2.10"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-konva": "^19.2.5"
   },
   "devDependencies": {
     "@types/node": "20.19.0",
-    "@types/react": "18.3.23",
-    "@types/react-dom": "18.3.7",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "autoprefixer": "10.4.21",
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.9",

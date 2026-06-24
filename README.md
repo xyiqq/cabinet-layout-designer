@@ -28,10 +28,24 @@ An open-source MVP for planning electrical cabinets, control panels, and network
 - 支持导出项目 JSON。
 - 支持导出柜体 / 机柜布局 PNG。
 
+## Screenshots / 截图
+
+### Cabinet And Control Panel / 配电箱与控制柜
+
+![Cabinet layout overview](docs/images/cabinet-layout-designer-overview.png)
+
+### Network Rack / 网络机柜
+
+![Network rack layout](docs/images/cabinet-layout-designer-rack.png)
+
+### Docker Hub
+
+![Docker Hub repository page](docs/images/dockerhub-repository.png)
+
 ## Tech Stack / 技术栈
 
 - Next.js 16
-- React 18
+- React 19
 - TypeScript
 - Tailwind CSS
 - Konva / React Konva
@@ -103,6 +117,8 @@ docker compose -f docker-compose.build.yml up -d --build
 - Docker Hub publishing / Docker Hub 发布:
   [中文](docs/DOCKERHUB.zh-CN.md) /
   [English](docs/DOCKERHUB.en.md)
+- Docker Hub overview source / Docker Hub 概览文案:
+  [docs/DOCKERHUB-OVERVIEW.md](docs/DOCKERHUB-OVERVIEW.md)
 - Maintenance notes / 维护说明:
   [中文](docs/MAINTENANCE.zh-CN.md) /
   [English](docs/MAINTENANCE.en.md)

@@ -8,6 +8,22 @@ xyiqq/cabinet-layout-designer
 
 语言：中文 / [English](DOCKERHUB.en.md)
 
+## 截图
+
+### 应用总览
+
+![柜体布局总览](images/cabinet-layout-designer-overview.png)
+
+### 网络机柜模式
+
+![网络机柜布局](images/cabinet-layout-designer-rack.png)
+
+### Docker Hub 仓库页
+
+![Docker Hub 仓库页](images/dockerhub-repository.png)
+
+Docker Hub 仓库概览可使用 [DOCKERHUB-OVERVIEW.md](DOCKERHUB-OVERVIEW.md) 作为复制粘贴来源。该文件使用 GitHub raw 绝对图片链接，推送到 GitHub 后可在 Docker Hub 正常显示截图。
+
 ## 直接下载运行
 
 ```bash

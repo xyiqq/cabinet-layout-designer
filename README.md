@@ -97,10 +97,15 @@ docker compose -f docker-compose.build.yml up -d --build
 
 ## Deployment Guides / 部署说明
 
-- Chinese: [docs/DEPLOYMENT.zh-CN.md](docs/DEPLOYMENT.zh-CN.md)
-- English: [docs/DEPLOYMENT.en.md](docs/DEPLOYMENT.en.md)
-- Docker Hub publishing: [docs/DOCKERHUB.zh-CN.md](docs/DOCKERHUB.zh-CN.md)
-- Maintenance notes: [docs/MAINTENANCE.zh-CN.md](docs/MAINTENANCE.zh-CN.md)
+- Deployment / 部署:
+  [中文](docs/DEPLOYMENT.zh-CN.md) /
+  [English](docs/DEPLOYMENT.en.md)
+- Docker Hub publishing / Docker Hub 发布:
+  [中文](docs/DOCKERHUB.zh-CN.md) /
+  [English](docs/DOCKERHUB.en.md)
+- Maintenance notes / 维护说明:
+  [中文](docs/MAINTENANCE.zh-CN.md) /
+  [English](docs/MAINTENANCE.en.md)
 
 ## Project Structure / 项目结构
 

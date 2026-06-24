@@ -2,6 +2,8 @@
 
 This guide explains how to run Cabinet Layout Designer locally, with Docker, and on a Linux server.
 
+Language: [中文](DEPLOYMENT.zh-CN.md) / English
+
 ## 1. Requirements
 
 The project does not require a database and does not require an `.env` file by default.
@@ -319,7 +321,7 @@ Published tags:
 - `xyiqq/cabinet-layout-designer:<tag>` for release tags
 - Architecture-specific helper tags are also published with `-amd64` and `-arm64` suffixes before the multi-architecture manifest is assembled.
 
-See [DOCKERHUB.zh-CN.md](DOCKERHUB.zh-CN.md) for the Chinese publishing checklist.
+See [DOCKERHUB.en.md](DOCKERHUB.en.md) for the full Docker Hub publishing checklist, or [DOCKERHUB.zh-CN.md](DOCKERHUB.zh-CN.md) for the Chinese version.
 
 ## 14. Troubleshooting
 

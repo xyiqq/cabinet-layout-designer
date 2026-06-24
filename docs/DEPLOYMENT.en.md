@@ -309,8 +309,8 @@ The repository includes `.github/workflows/dockerhub.yml`. It publishes the Dock
 
 Required GitHub Actions secrets:
 
-- `DOCKERHUB_USERNAME`
-- `DOCKERHUB_TOKEN`
+- `DOCKERHUB_XYIQQ`, containing a Docker Hub access token for the `xyiqq` account.
+- Alternatively, use `DOCKERHUB_USERNAME` plus `DOCKERHUB_TOKEN`.
 
 Published tags:
 

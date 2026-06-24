@@ -67,7 +67,13 @@ docker build -t xyiqq/cabinet-layout-designer:local .
 - `xyiqq/cabinet-layout-designer:sha-<commit>`
 - `xyiqq/cabinet-layout-designer:<tag>`，仅 tag 触发时生成
 
-第一次启用前，需要在 GitHub 仓库的 `Settings -> Secrets and variables -> Actions` 添加：
+第一次启用前，需要在 GitHub 仓库的 `Settings -> Secrets and variables -> Actions` 添加以下任一种配置。
+
+当前仓库使用的是：
+
+- `DOCKERHUB_XYIQQ`: Docker Hub access token
+
+也可以使用标准的双 secret 配置：
 
 - `DOCKERHUB_USERNAME`: Docker Hub 用户名
 - `DOCKERHUB_TOKEN`: Docker Hub access token，不建议使用登录密码

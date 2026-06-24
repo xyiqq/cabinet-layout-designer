@@ -1,6 +1,9 @@
 services:
   cabinet-layout-designer:
-    image: ${IMAGE_NAME:-xyiqq/cabinet-layout-designer}:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${IMAGE_NAME:-xyiqq/cabinet-layout-designer}:${IMAGE_TAG:-local}
     container_name: cabinet-layout-designer
     restart: unless-stopped
     environment:

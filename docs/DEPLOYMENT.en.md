@@ -53,12 +53,46 @@ curl -fsSI http://127.0.0.1:3000/
 
 Use another port by replacing `3000`.
 
-## 4. Docker Compose Deployment
+## 4. Docker Hub Image Deployment
+
+The recommended container path is to pull the published Docker Hub image:
+
+```bash
+docker pull xyiqq/cabinet-layout-designer:latest
+docker run -d \
+  --name cabinet-layout-designer \
+  --restart unless-stopped \
+  -p 3000:3000 \
+  xyiqq/cabinet-layout-designer:latest
+```
+
+Verify:
+
+```bash
+docker ps --filter name=cabinet-layout-designer
+curl -fsSI http://127.0.0.1:3000/
+docker inspect --format '{{.State.Health.Status}}' cabinet-layout-designer
+```
+
+Use another host port, for example `8080`:
+
+```bash
+docker rm -f cabinet-layout-designer
+docker run -d \
+  --name cabinet-layout-designer \
+  --restart unless-stopped \
+  -p 8080:3000 \
+  xyiqq/cabinet-layout-designer:latest
+```
+
+## 5. Docker Compose Deployment
+
+The included `docker-compose.yml` defaults to Docker Hub image downloads, so a server does not need to build from source.
 
 The default host port is `3000`:
 
 ```bash
-docker compose up -d --build
+docker compose up -d
 ```
 
 Verify:
@@ -71,7 +105,7 @@ curl -fsSI http://127.0.0.1:3000/
 Use a different host port, for example `8080`:
 
 ```bash
-APP_PORT=8080 docker compose up -d --build
+APP_PORT=8080 docker compose up -d
 curl -fsSI http://127.0.0.1:8080/
 ```
 
@@ -87,15 +121,23 @@ Stop:
 docker compose down
 ```
 
-## 5. Manual Docker Deployment
+## 6. Local Source Image Build
+
+Use this path when you are changing the source and want to build the image yourself.
 
 ```bash
-docker build -t cabinet-layout-designer:latest .
+docker compose -f docker-compose.build.yml up -d --build
+```
+
+Or build manually:
+
+```bash
+docker build -t xyiqq/cabinet-layout-designer:local .
 docker run -d \
   --name cabinet-layout-designer \
   --restart unless-stopped \
   -p 3000:3000 \
-  cabinet-layout-designer:latest
+  xyiqq/cabinet-layout-designer:local
 ```
 
 Verify:
@@ -111,7 +153,7 @@ Stop and remove:
 docker rm -f cabinet-layout-designer
 ```
 
-## 6. Linux Server Deployment
+## 7. Linux Server Deployment
 
 Example directory:
 
@@ -125,7 +167,7 @@ git clone https://github.com/xyiqq/cabinet-layout-designer.git .
 Then use Docker Compose:
 
 ```bash
-APP_PORT=8080 docker compose up -d --build
+APP_PORT=8080 docker compose up -d
 ```
 
 Or use Node.js production mode:
@@ -138,7 +180,7 @@ npm run start -- --hostname 0.0.0.0 --port 8080
 
 For production, Docker Compose or systemd is recommended.
 
-## 7. systemd Example
+## 8. systemd Example
 
 If you do not use Docker, systemd can manage the Next.js process. The example below assumes the project is located at `/opt/cabinet-layout-designer` and listens on port `8080`.
 
@@ -176,7 +218,7 @@ View logs:
 journalctl -u cabinet-layout-designer -f
 ```
 
-## 8. Reverse Proxy Example
+## 9. Reverse Proxy Example
 
 To serve the app behind a domain, proxy requests to the local app port. Replace the domain and port in this template.
 
@@ -198,14 +240,15 @@ server {
 
 For public deployments, add HTTPS, access control, basic authentication, or private network restrictions as needed.
 
-## 9. Updating a Deployment
+## 10. Updating a Deployment
 
-Docker Compose:
+Docker Hub image or Docker Compose:
 
 ```bash
 cd /opt/cabinet-layout-designer
 git pull
-APP_PORT=8080 docker compose up -d --build
+docker pull xyiqq/cabinet-layout-designer:latest
+APP_PORT=8080 docker compose up -d
 docker compose ps
 curl -fsSI http://127.0.0.1:8080/
 ```
@@ -221,7 +264,7 @@ sudo systemctl restart cabinet-layout-designer
 sudo systemctl status cabinet-layout-designer
 ```
 
-## 10. Rollback
+## 11. Rollback
 
 With Git, check out an earlier commit:
 
@@ -235,7 +278,7 @@ Then redeploy with the relevant commands.
 With Docker, tag the current image before an upgrade:
 
 ```bash
-docker tag cabinet-layout-designer:latest cabinet-layout-designer:before-upgrade
+docker tag xyiqq/cabinet-layout-designer:latest xyiqq/cabinet-layout-designer:before-upgrade
 ```
 
 Rollback by starting the old tag:
@@ -246,10 +289,10 @@ docker run -d \
   --name cabinet-layout-designer \
   --restart unless-stopped \
   -p 8080:3000 \
-  cabinet-layout-designer:before-upgrade
+  xyiqq/cabinet-layout-designer:before-upgrade
 ```
 
-## 11. Data and Persistence
+## 12. Data and Persistence
 
 There is no backend database yet.
 
@@ -260,7 +303,24 @@ There is no backend database yet.
 
 For team-shared product libraries, add a backend API or an import/export workflow.
 
-## 12. Troubleshooting
+## 13. Docker Hub Publishing
+
+The repository includes `.github/workflows/dockerhub.yml`. It publishes multi-platform images to Docker Hub on pushes to `main`, on `v*` tags, and on manual workflow dispatch.
+
+Required GitHub Actions secrets:
+
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
+
+Published tags:
+
+- `xyiqq/cabinet-layout-designer:latest` for `main`
+- `xyiqq/cabinet-layout-designer:sha-<commit>` for commit-addressable images
+- `xyiqq/cabinet-layout-designer:<tag>` for release tags
+
+See [DOCKERHUB.zh-CN.md](DOCKERHUB.zh-CN.md) for the Chinese publishing checklist.
+
+## 14. Troubleshooting
 
 ### `npm ci` fails
 
@@ -300,7 +360,7 @@ If the issue remains, open an issue with your browser version, reproduction step
 
 This is a known MVP limitation. Custom products are browser-local only.
 
-## 13. Security Notes
+## 15. Security Notes
 
 - Do not commit `.env` files, server addresses, SSH usernames, private keys, tokens, or internal deployment logs.
 - Use HTTPS for public deployments.

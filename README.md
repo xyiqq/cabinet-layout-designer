@@ -60,8 +60,21 @@ npm run test:network-layout
 
 ## Docker
 
+Pull the published image from Docker Hub:
+
 ```bash
-docker compose up -d --build
+docker pull xyiqq/cabinet-layout-designer:latest
+docker run -d \
+  --name cabinet-layout-designer \
+  --restart unless-stopped \
+  -p 3000:3000 \
+  xyiqq/cabinet-layout-designer:latest
+```
+
+Or use the included compose file, which defaults to the same Docker Hub image:
+
+```bash
+docker compose up -d
 ```
 
 By default the app is exposed on `http://localhost:3000`.
@@ -73,13 +86,20 @@ To use another host port:
 如需使用其他宿主机端口：
 
 ```bash
-APP_PORT=8080 docker compose up -d --build
+APP_PORT=8080 docker compose up -d
+```
+
+To build the image from local source instead of downloading it:
+
+```bash
+docker compose -f docker-compose.build.yml up -d --build
 ```
 
 ## Deployment Guides / 部署说明
 
 - Chinese: [docs/DEPLOYMENT.zh-CN.md](docs/DEPLOYMENT.zh-CN.md)
 - English: [docs/DEPLOYMENT.en.md](docs/DEPLOYMENT.en.md)
+- Docker Hub publishing: [docs/DOCKERHUB.zh-CN.md](docs/DOCKERHUB.zh-CN.md)
 - Maintenance notes: [docs/MAINTENANCE.zh-CN.md](docs/MAINTENANCE.zh-CN.md)
 
 ## Project Structure / 项目结构

@@ -66,6 +66,7 @@ docker build -t xyiqq/cabinet-layout-designer:local .
 - `xyiqq/cabinet-layout-designer:latest`
 - `xyiqq/cabinet-layout-designer:sha-<commit>`
 - `xyiqq/cabinet-layout-designer:<tag>`，仅 tag 触发时生成
+- 同时会先生成带 `-amd64` 和 `-arm64` 后缀的架构专用辅助 tag，再合成多架构 manifest。
 
 第一次启用前，需要在 GitHub 仓库的 `Settings -> Secrets and variables -> Actions` 添加以下任一种配置。
 

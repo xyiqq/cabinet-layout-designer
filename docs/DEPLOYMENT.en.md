@@ -317,6 +317,7 @@ Published tags:
 - `xyiqq/cabinet-layout-designer:latest` for `main`
 - `xyiqq/cabinet-layout-designer:sha-<commit>` for commit-addressable images
 - `xyiqq/cabinet-layout-designer:<tag>` for release tags
+- Architecture-specific helper tags are also published with `-amd64` and `-arm64` suffixes before the multi-architecture manifest is assembled.
 
 See [DOCKERHUB.zh-CN.md](DOCKERHUB.zh-CN.md) for the Chinese publishing checklist.
 

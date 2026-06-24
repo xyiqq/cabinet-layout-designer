@@ -12,11 +12,13 @@ env:
   IMAGE_NAME: xyiqq/cabinet-layout-designer
 
 jobs:
-  dockerhub:
-    name: Build image and publish when credentials exist
+  resolve:
+    name: Resolve Docker publishing mode
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    outputs:
+      can_push: ${{ steps.publish.outputs.can_push }}
+      username: ${{ steps.publish.outputs.username }}
+      short_sha: ${{ steps.vars.outputs.short_sha }}
     steps:
       - name: Resolve publish mode
         id: publish
@@ -33,24 +35,41 @@ jobs:
             echo "Docker Hub credentials found. This run will publish the image."
           else
             echo "can_push=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Docker Hub secrets are not configured. This run will build the image without pushing it."
+            echo "::notice::Docker Hub secrets are not configured. This run will build images without pushing them."
           fi
 
+      - name: Resolve tag variables
+        id: vars
+        run: echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build ${{ matrix.suffix }} image
+    needs: resolve
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suffix: amd64
+            platform: linux/amd64
+            runner: ubuntu-latest
+          - suffix: arm64
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    steps:
       - name: Check out repository
         uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        if: steps.publish.outputs.can_push == 'true'
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
-        if: steps.publish.outputs.can_push == 'true'
+        if: needs.resolve.outputs.can_push == 'true'
         uses: docker/login-action@v3
         with:
-          username: ${{ steps.publish.outputs.username }}
+          username: ${{ needs.resolve.outputs.username }}
           password: ${{ secrets.DOCKERHUB_TOKEN || secrets.DOCKERHUB_XYIQQ }}
 
       - name: Generate image metadata
@@ -59,40 +78,71 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=sha,prefix=sha-
-            type=ref,event=tag
+            type=raw,value=latest-${{ matrix.suffix }},enable={{is_default_branch}}
+            type=sha,prefix=sha-,suffix=-${{ matrix.suffix }}
+            type=ref,event=tag,suffix=-${{ matrix.suffix }}
 
-      - name: Build image without publishing
-        if: steps.publish.outputs.can_push != 'true'
+      - name: Build image
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: false
-          platforms: linux/amd64
+          push: ${{ needs.resolve.outputs.can_push == 'true' }}
+          platforms: ${{ matrix.platform }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          provenance: false
+          cache-from: type=gha,scope=${{ matrix.suffix }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.suffix }}
 
-      - name: Build and push image
-        if: steps.publish.outputs.can_push == 'true'
-        uses: docker/build-push-action@v6
+  manifest:
+    name: Publish multi-architecture manifest
+    needs:
+      - resolve
+      - build
+    if: needs.resolve.outputs.can_push == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
         with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          username: ${{ needs.resolve.outputs.username }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || secrets.DOCKERHUB_XYIQQ }}
+
+      - name: Create manifest tags
+        env:
+          SHORT_SHA: ${{ needs.resolve.outputs.short_sha }}
+        run: |
+          docker buildx imagetools create \
+            -t "$IMAGE_NAME:sha-$SHORT_SHA" \
+            "$IMAGE_NAME:sha-$SHORT_SHA-amd64" \
+            "$IMAGE_NAME:sha-$SHORT_SHA-arm64"
+
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            docker buildx imagetools create \
+              -t "$IMAGE_NAME:latest" \
+              "$IMAGE_NAME:latest-amd64" \
+              "$IMAGE_NAME:latest-arm64"
+          fi
+
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            docker buildx imagetools create \
+              -t "$IMAGE_NAME:$GITHUB_REF_NAME" \
+              "$IMAGE_NAME:$GITHUB_REF_NAME-amd64" \
+              "$IMAGE_NAME:$GITHUB_REF_NAME-arm64"
+          fi
 
       - name: Publish summary
+        env:
+          SHORT_SHA: ${{ needs.resolve.outputs.short_sha }}
         run: |
-          if [ "${{ steps.publish.outputs.can_push }}" = "true" ]; then
-            echo "Published image tags:" >> "$GITHUB_STEP_SUMMARY"
-            echo '${{ steps.meta.outputs.tags }}' >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "Docker image build completed without publishing." >> "$GITHUB_STEP_SUMMARY"
-            echo "Add DOCKERHUB_TOKEN or DOCKERHUB_XYIQQ repository secret, then rerun this workflow to publish." >> "$GITHUB_STEP_SUMMARY"
+          echo "Published Docker image manifests:" >> "$GITHUB_STEP_SUMMARY"
+          echo "- $IMAGE_NAME:sha-$SHORT_SHA" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            echo "- $IMAGE_NAME:latest" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            echo "- $IMAGE_NAME:$GITHUB_REF_NAME" >> "$GITHUB_STEP_SUMMARY"
           fi
